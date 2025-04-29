@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraqueClip - Treinos de Elite para Jogadores de Futebol</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FFD700;
+            --secondary: #000000;
+            --accent: #1a1a1a;
+            --text: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background-color: var(--secondary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            padding: 30px 0;
+            text-align: center;
+            position: relative;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 5px solid var(--primary);
+        }
+        
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+        }
+        
+        .slogan {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-style: italic;
+            margin-top: 10px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            margin: 15px auto;
+        }
+        
+        /* Products Grid */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .product {
+            background-color: var(--accent);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255,215,0,0.2);
+        }
+        
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product:hover .product-image img {
+            transform: scale(1.1);
+        }
+        
+        .product-content {
+            padding: 25px;
+        }
+        
+        .product-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .product-description {
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        
+        .price {
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .price span {
+            font-size: 1rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+        
+        .buy-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), #ffc800);
+            color: var(--secondary);
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .buy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.4);
+        }
+        
+        .buy-btn i {
+            margin-left: 8px;
+        }
+        
+        /* Modal de Pagamento */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--accent);
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            border: 3px solid var(--primary);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .modal-pix {
+            background-color: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px dashed var(--primary);
+        }
+        
+        .modal-pix-title {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .modal-pix-key {
+            font-size: 1.5rem;
+            word-break: break-all;
+            font-weight: bold;
+        }
+        
+        .modal-instructions {
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .modal-instructions li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .modal-instructions li:before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 10px;
+            font-weight: bold;
+        }
+        
+        .highlight {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--accent);
+            padding: 50px 0 30px;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            margin: 30px 0;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border-radius: 50%;
+            margin: 0 10px;
+            line-height: 50px;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            color: #999;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                height: 300px;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .slogan {
+                font-size: 1.2rem;
+            }
+            
+            .products {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo">CraqueClip</div>
+            <div class="slogan">Transforme seu jogo com métodos de elite</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h2 class="section-title">NOSSOS PRODUTOS PREMIUM</h2>
+        
+        <div class="products">
+            <div class="product">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1543351611-58f69d7c1781?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Rotina de Treino para Jovens Craques">
+                </div>
+                <div class="product-content">
+                    <h3 class="product-title">ROTINA DE TREINO PARA JOVENS CRAQUES</h3>
+                    <p class="product-description">
+                        Programa completo de 12 semanas com exercícios progressivos para desenvolvimento técnico, tático e físico. Inclui vídeo-aulas, planilhas de acompanhamento e avaliação de desempenho.
+                    </p>
+                    <div class="price">R$ 25,99 <span>R$ 85,99</span></div>
+                    <button class="buy-btn" onclick="openModal()">COMPRAR AGORA <i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+            
+            <div class="product">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="50 Dribles Fáceis">
+                </div>
+                <div class="product-content">
+                    <h3 class="product-title">50 DRIBLES FÁCEIS PARA HUMILHAR ZAGUEIROS</h3>
+                    <p class="product-description">
+                        Domine 50 técnicas de drible usadas pelos melhores jogadores do mundo. Com instruções passo a passo e exercícios práticos para aplicar em jogos reais.
+                    </p>
+                    <div class="price">R$ 19,99 <span>R$ 59,99</span></div>
+                    <button class="buy-btn" onclick="openModal()">COMPRAR AGORA <i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+            
+            <div class="product">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Alimentação e Treino Físico">
+                </div>
+                <div class="product-content">
+                    <h3 class="product-title">ALIMENTAÇÃO E TREINO DE ATLETA PROFISSIONAL</h3>
+                    <p class="product-description">
+                        Guia completo de nutrição esportiva e preparo físico usado por atletas de elite. Inclui planos alimentares semanais, receitas e programas de treino específicos.
+                    </p>
+                    <div class="price">R$ 39,99 <span>R$ 79,99</span></div>
+                    <button class="buy-btn" onclick="openModal()">COMPRAR AGORA <i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Pagamento -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3 class="modal-title">FINALIZAR COMPRA</h3>
+            
+            <div class="modal-pix">
+                <div class="modal-pix-title">CHAVE PIX (CPF):</div>
+                <div class="modal-pix-key">085.231.635-65</div>
+            </div>
+            
+            <div class="modal-instructions">
+                <p><strong>INSTRUÇÕES PARA PAGAMENTO:</strong></p>
+                <ol>
+                    <li>Faça o pagamento via PIX para a chave acima</li>
+                    <li>Envie o comprovante para nosso Instagram <span class="highlight">@drcs_2011</span></li>
+                    <li>Você receberá seu produto por e-mail em até <span class="highlight">24 horas</span></li>
+                    <li>Qualquer dúvida, entre em contato pelo nosso Instagram</li>
+                </ol>
+            </div>
+            
+            <button class="buy-btn" onclick="closeModal()" style="margin-top: 20px;">ENTENDI <i class="fas fa-check"></i></button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-logo">CRAQUECLIP</div>
+        <p>Os melhores treinos para jogadores que querem se destacar</p>
+        
+        <div class="social-links">
+            <a href="https://instagram.com/drcs_2011" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2023 CraqueClip. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script>
+        // Funções para abrir e fechar o modal
+        function openModal() {
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+        
+        // Fechar o modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
